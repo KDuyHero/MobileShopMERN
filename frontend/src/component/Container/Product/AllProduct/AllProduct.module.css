@@ -1,0 +1,38 @@
+.wrapper {
+    text-align: left;
+}
+
+.wrapper>* {
+    background-color: white;
+    border-radius   : 20px;
+    padding         : 20px 20px;
+}
+
+
+.header {
+    display        : flex;
+    flex-direction : row;
+    justify-content: space-between;
+    align-items    : center;
+    padding        : 10px 0;
+}
+
+
+.header button {
+    margin : 0;
+    padding: 5px 3px;
+}
+
+.container {
+    margin-top: 30px;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+tr td:last-child button {
+    display: inline-block;
+    margin : 5px;
+    padding: 3px 5px;
+}

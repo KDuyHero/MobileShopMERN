@@ -1,0 +1,98 @@
+.wrapper {
+    background-color: var(--white);
+    display         : flex;
+    justify-content : center;
+    align-items     : center;
+    width           : 100vw;
+    min-width       : 700px;
+    height          : 100vh;
+    min-height      : 500px;
+    background      :
+        linear-gradient(rgba(255, 255, 255, 1) 0%, rgba(251, 251, 251, 0.1) 100%), linear-gradient(90deg, #84d2ff, #8d5acd);
+    padding: 30px 70px;
+}
+
+
+
+.slogan {
+    width          : 55%;
+    height         : 100%;
+    font-size      : 30px;
+    display        : flex;
+    justify-content: center;
+    align-items    : center;
+    position       : relative;
+}
+
+.shopName {
+    position: absolute;
+    top     : 10px;
+    left    : 0;
+}
+
+.welcome {
+    text-align    : left;
+    text-transform: uppercase;
+    font-size     : 80px;
+}
+
+.formLogin {
+    width           : 35%;
+    min-width       : 300px;
+    height          : 80%;
+    min-height      : 500px;
+    display         : flex;
+    flex-direction  : column;
+    padding         : 20px;
+    border-radius   : 20px;
+    background-color: var(--white);
+    font-size       : 16px;
+    border          : 2px solid #ccc
+}
+
+.formLogin>* {
+    margin-top: 10px;
+}
+
+.formGroup {
+    display       : flex;
+    flex-direction: column;
+    position      : relative;
+}
+
+.formGroup label {
+    text-align: left;
+    margin    : 8px 0 2px 0;
+}
+
+.formGroup input {
+    border       : 1px solid var(--text-color);
+    border-radius: 5px;
+    height       : 40px;
+    padding      : 2px 10px;
+
+}
+
+.showIcon {
+    position: absolute;
+    right   : 5px;
+    bottom  : 8px;
+}
+
+.submitBtn {
+    background : linear-gradient(rgba(255, 255, 255, 1) 0%, rgba(251, 251, 251, 0.1) 100%), linear-gradient(90deg, #84d2ff, #8d5acd);
+    margin     : 30px auto 0 auto;
+    font-weight: 600;
+
+}
+
+.errorMessage {
+    color      : red;
+    text-align : center;
+    font-weight: 600;
+    height     : 30px;
+}
+
+.otherAction {
+    font-weight: 600;
+}

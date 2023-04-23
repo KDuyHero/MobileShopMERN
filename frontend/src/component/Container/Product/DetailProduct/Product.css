@@ -1,0 +1,215 @@
+.wrapper {
+    background-color: #f1eded;
+}
+
+.contentContainer {
+    margin-top: 20px;
+    padding   : 0;
+    height    : 1000px;
+
+}
+
+.contentContainer>* {
+    background-color: var(--white);
+    border-radius   : 10px;
+    margin-top      : 30px;
+    padding         : 30px;
+}
+
+
+.info {
+    display       : flex;
+    flex-direction: row;
+}
+
+.image {
+    width          : 60%;
+    display        : flex;
+    flex-direction : column;
+    justify-content: flex-start;
+}
+
+.currentImage {
+    width              : 100%;
+    min-width          : 200px;
+    height             : 400px;
+    background-repeat  : no-repeat;
+    background-size    : contain;
+    background-position: center;
+}
+
+.moreImage {
+    margin-top     : 10px;
+    display        : flex;
+    justify-content: center;
+    flex-wrap      : wrap;
+}
+
+.subImage {
+    height             : 80px;
+    min-height         : 50px;
+    width              : 80px;
+    min-width          : 50px;
+    margin             : 3px;
+    border             : 2px solid;
+    border-radius      : 10px;
+    background-size    : contain;
+    background-repeat  : no-repeat;
+    background-position: center;
+
+}
+
+.subImage:hover {
+    border: 2px solid red;
+}
+
+.subInfo {
+    text-align  : left;
+    padding-left: 10px;
+    margin-left : 10px;
+}
+
+.subInfo>* {
+    margin-top: 20px;
+}
+
+.productName {}
+
+.price {
+    height          : 50px;
+    padding         : 5px 10px;
+    background-color: #ececec;
+    display         : flex;
+    justify-content : flex-start;
+    align-items     : center;
+}
+
+.price>* {
+    margin    : 0 12px 0 0;
+    text-align: center;
+}
+
+/* has discount */
+.realPrice {
+    text-decoration-line: line-through;
+}
+
+.discountPrice {
+    font-size: 28px;
+    color    : rgb(196, 19, 19);
+}
+
+.discount {
+    background-color: red;
+    color           : var(--white);
+    font-size       : 12px;
+    padding         : 2px;
+    font-weight     : 700;
+}
+
+/* don't has discount */
+.notDiscount {
+    font-size  : 24px;
+    font-weight: 6004;
+}
+
+.quantity {
+    display: flex;
+}
+
+.quantity>span {
+    margin-right: 20px;
+    font-weight : 600;
+}
+
+.quantity>div {
+    border: 1px solid #333;
+}
+
+.quantity>div span {
+    display   : inline-block;
+    text-align: center;
+    width     : 30px;
+}
+
+
+.quantity button {
+    display         : inline-block;
+    padding         : 0px 9px;
+    text-align      : center;
+    background-color: #fff;
+    border          : 1px solid #333;
+}
+
+.quantity button:hover {
+    background-color: #ececec;
+}
+
+.btn {
+    display        : flex;
+    justify-content: space-between;
+    margin-top     : 60px;
+    padding        : 0;
+}
+
+.addToCartBtn {
+    background-color: #eccbcb;
+    padding         : 12px;
+    display         : flex;
+    justify-content : center;
+    align-items     : center;
+    font-size       : 16px;
+    font-weight     : 500;
+    color           : red;
+    border          : 1px solid red;
+    border-radius   : 5px;
+}
+
+.addToCartBtn>* {
+    margin: 5px;
+}
+
+.buyNowBtn {
+    background-color: #eccbcb;
+    padding         : 12px;
+    display         : flex;
+    justify-content : center;
+    align-items     : center;
+    font-size       : 16px;
+    font-weight     : 500;
+    color           : var(--white);
+    background-color: red;
+    border-radius   : 5px;
+    margin-left     : 20px;
+}
+
+.detail {
+    text-align: left;
+}
+
+.detail h3 {
+    margin-bottom: 20px;
+}
+
+/* table */
+table tr {
+    height: 30px;
+}
+
+table th {
+    text-transform: capitalize;
+}
+
+table td {
+    padding-left: 50px;
+}
+
+.recommend {
+    text-align: left;
+}
+
+.productRecommend {
+    display       : flex;
+    flex-wrap     : wrap;
+    flex-direction: row;
+}
