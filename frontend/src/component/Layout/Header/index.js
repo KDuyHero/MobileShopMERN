@@ -1,22 +1,19 @@
-import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import styles from "./Header.module.css";
 function Header({ className = "" }) {
-  const [cookies, setCookie, removeCookie] = useCookies(["authorization"]);
   const navigate = useNavigate();
   const categorys = ["Iphone", "Samsung", "Xiaomi", "Realme", "Nokia"];
 
   const handleLogout = () => {
-    removeCookie("isLogin");
-    removeCookie("access_token");
-    window.location.reload();
+    window.localStorage.clear();
+    // window.location.reload();
   };
 
   const handleViewUserDetail = () => {
-    let token = cookies.access_token;
+    let token = window.localStorage.getItem("token");
   };
   return (
     <div className={[styles.wrapper, className].join(" ")}>
@@ -24,7 +21,7 @@ function Header({ className = "" }) {
         <div className={[styles.brand].join(" ")}>
           <Link to="/">My Mobile Shop</Link>
         </div>
-        {cookies.isLogin ? (
+        {window.localStorage.getItem("token") ? (
           <div className={styles.user}>
             <FontAwesomeIcon icon={faUser} className={styles.userIcon} />
             <div className={styles.dropDownUser}>

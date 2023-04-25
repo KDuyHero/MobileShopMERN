@@ -17,9 +17,11 @@ function ProductOfCategory() {
   }, [params.category]);
   return (
     <div className={styles.wrapper}>
-      <Header />
-      <h1>{params.category}</h1>
-      <ShowListProduct products={products} />
+      <div className="container">
+        <Header />
+        <h1>{params.category}</h1>
+        <ShowListProduct products={products} />
+      </div>
     </div>
   );
 }

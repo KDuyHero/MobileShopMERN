@@ -7,10 +7,20 @@ const bornToken = (data, secret, time) => {
   return jwt.sign(data, secret, { expiresIn: time });
 };
 
-const refreshToken = (req, res) => {
+const verifyToken = (token) => {
+  return jwt.verify(token, process.env.REFRESH_KEY);
+};
+
+const refreshToken = async (req, res) => {
   try {
-    res.status(200).json({
-      message: "OK",
+    let { refresh_token } = req.body;
+    let decode = await verifyToken(refresh_token);
+    return res.status(200).json({
+      newToken: bornToken(
+        { email: decode.email },
+        process.env.SECRET_KEY,
+        "1m"
+      ),
     });
   } catch (error) {
     return res.status(200).json({
@@ -40,11 +50,12 @@ let Signin = async (req, res) => {
       });
     }
     // correct email and password
-    const access_token = bornToken({ email }, process.env.SECRET_KEY, "30m");
+    const access_token = bornToken({ email }, process.env.SECRET_KEY, "1m");
     return res.status(200).json({
       errorCode: 0,
       message: "Signin successful",
       access_token,
+      refresh_token: user.refresh_token,
     });
   } catch (error) {
     return res.status(200).json({

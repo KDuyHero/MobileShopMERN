@@ -1,12 +1,9 @@
-import { useCookies } from "react-cookie";
 import { useState, useEffect } from "react";
 import axios from "../../../axios";
 import Header from "../../Layout/Header";
 import ShowListProduct from "../../Layout/ShowListProduct";
 import styles from "./Homepage.module.css";
 function Homepage() {
-  // const [cookies, setCookie] = useCookies("authorization");
-  // const authorization = cookies.access_token;
   const [products, setProducts] = useState([]);
   useEffect(() => {
     axios

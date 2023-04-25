@@ -63,7 +63,6 @@ let createProduct = async (req, res) => {
       memory,
       ram,
     } = req.body);
-    console.log(req.body);
     data.images = req.files.map((file) => file.filename);
     data.detail = {
       rear_camera,
@@ -148,7 +147,6 @@ let deleteProduct = async (req, res) => {
 let getProductByCategory = async (req, res) => {
   try {
     let category = req.params.category;
-    console.log(category);
     let products = await Product.find({ category }).exec();
     res.status(200).json({
       errorCode: 0,

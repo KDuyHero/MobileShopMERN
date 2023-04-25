@@ -145,11 +145,14 @@
     background-color: #ececec;
 }
 
-.btn {
-    display        : flex;
-    justify-content: space-between;
-    margin-top     : 60px;
-    padding        : 0;
+.button {
+    display   : flex;
+    margin-top: 60px;
+    padding   : 0;
+}
+
+.button>* {
+    cursor: pointer;
 }
 
 .addToCartBtn {
@@ -212,4 +215,52 @@ table td {
     display       : flex;
     flex-wrap     : wrap;
     flex-direction: row;
+}
+
+/* Bill */
+
+/* Modal pay */
+.modalPay {
+    width          : 100%;
+    height         : 100vh;
+    position       : fixed;
+    display        : flex;
+    justify-content: center;
+    align-items    : center;
+    top            : 0;
+    left           : 0;
+}
+
+.layer {
+    width           : 100%;
+    height          : 100%;
+    position        : absolute;
+    background-color: rgba(100, 100, 100, 0.3);
+    top             : 0;
+    left            : 0;
+}
+
+.bill {
+    width           : 800px;
+    height          : 600px;
+    background-color: #fff;
+    z-index         : 1;
+    margin          : auto auto;
+    display         : flex;
+    align-items     : center;
+    flex-direction  : column;
+    border-radius   : 10px;
+    padding         : 20px;
+}
+
+.bill table {
+    margin-bottom: 20px;
+}
+
+.buttonBill {
+    margin-top: 20px;
+}
+
+.buttonBill>button {
+    margin: 10px;
 }

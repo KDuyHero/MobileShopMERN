@@ -43,6 +43,14 @@ function Card({
     return host + filename;
   };
 
+  // convert number to form x.xxx.xxx VNĐ
+  const convertPriceToString = (price) => {
+    return price.toLocaleString("it-IT", {
+      style: "currency",
+      currency: "VND",
+    });
+  };
+
   return (
     <div className={classes}>
       <div
@@ -58,10 +66,14 @@ function Card({
           <div className={styles.cardPriceContainer}>
             {product.discount > 0 ? (
               <>
-                <p className={styles.realPrice}>{product.price}</p>
+                <p className={styles.realPrice}>
+                  {convertPriceToString(product.price)}
+                </p>
                 <div className={styles.discountPriceContainer}>
                   <p className={styles.discountPrice}>
-                    {parseInt((product.price * (100 - product.discount)) / 100)}
+                    {convertPriceToString(
+                      parseInt((product.price * (100 - product.discount)) / 100)
+                    )}
                   </p>
                   <p className={styles.discount}>
                     <FontAwesomeIcon icon={faArrowTrendDown} />{" "}
@@ -70,7 +82,9 @@ function Card({
                 </div>
               </>
             ) : (
-              <p className={styles.notDiscount}>{product.price}</p>
+              <p className={styles.notDiscount}>
+                {convertPriceToString(product.price)}
+              </p>
             )}
           </div>
         </div>

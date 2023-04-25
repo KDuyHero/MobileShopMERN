@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import styles from "./Login.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
@@ -11,7 +10,6 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
-  const [cookies, setCookie] = useCookies(["authorization"]);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -37,8 +35,8 @@ function Login() {
         if (response && response.data.errorCode !== 0) {
           setErrorMessage(response.data.message);
         } else {
-          // setCookie("access_token", response.data.access_token);
-          setCookie("isLogin", true);
+          axios.saveAccessToken(response.data.access_token);
+          axios.saveRefreshToken(response.data.refresh_token);
           navigate("/");
         }
       })
@@ -61,7 +59,7 @@ function Login() {
           My Mobile Shop
         </h3>
         <h1 className={styles.welcome}>
-          Welcome <br /> to my store
+          Welcome <br /> to my shop
         </h1>
       </div>
       <form className={styles.formLogin} onSubmit={(e) => handleSubmit(e)}>

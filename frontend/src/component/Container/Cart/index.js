@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useCookies } from "react-cookie";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import axios from "../../../axios";
@@ -7,16 +6,26 @@ import axios from "../../../axios";
 import Header from "../../Layout/Header";
 import styles from "./Cart.module.css";
 function Cart() {
-  const [cookies, setCookie] = useCookies(["authorization"]);
   const [cartItems, setCartItems] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  // get total price
   const getTotal = () => {
     return cartItems.reduce((sum, currentItem) => {
       let add = currentItem.price * currentItem.quantity;
       return sum + add;
     }, 0);
   };
+
+  // convert number to form x.xxx.xxx VNĐ
+  const convertPriceToString = (price) => {
+    return price.toLocaleString("it-IT", {
+      style: "currency",
+      currency: "VND",
+    });
+  };
+  // header for axios
   let header = {
-    Authorization: "bearer " + cookies.access_token,
+    Authorization: "bearer " + window.localStorage.token,
   };
   // use effect to get data first time
   useEffect(() => {
@@ -52,15 +61,15 @@ function Cart() {
     let host = "http://localhost:8080/images/";
     return host + filename;
   };
-  const handleRemoveItem = (index) => {
-    console.log(cartItems);
+  // remove item
+  const handleReduceItem = (index, quantity) => {
     axios
       .post(
         "/carts/remove",
         {
           cartItems: {
             product: cartItems[index].product._id,
-            quantity: cartItems[index].quantity,
+            quantity: quantity,
             price: cartItems[index].price,
           },
         },
@@ -69,16 +78,27 @@ function Cart() {
         }
       )
       .then((response) => {
-        console.log(response.data);
-        setCartItems(cartItems.filter((v, i) => i !== index));
+        let newQuantity = cartItems[index].quantity - quantity;
+        // remove
+        if (newQuantity === 0) {
+          setCartItems(cartItems.filter((v, i) => i !== index));
+        } else {
+          setCartItems((preCart) => {
+            let cart = [...preCart];
+            cart[index] = { ...cart[index], quantity: newQuantity };
+            return cart;
+          });
+        }
       })
       .catch((error) => {
         console.log(error);
       });
   };
+
+  // Pay
   const handlePay = () => {};
   return (
-    <div>
+    <div className={styles.wrapper}>
       <Header />
       <div className={[styles.cart, "container"].join(" ")}>
         <h3>Giỏ hàng của tôi</h3>
@@ -97,7 +117,7 @@ function Cart() {
                     <FontAwesomeIcon
                       icon={faXmark}
                       className={styles.deleteIcon}
-                      onClick={() => handleRemoveItem(index)}
+                      onClick={() => handleReduceItem(index, cartItem.quantity)}
                     />
                     <div
                       className={styles.productImage}
@@ -109,9 +129,20 @@ function Cart() {
                     ></div>
                     <span>{cartItem.product.name}</span>
                   </td>
-                  <td>{cartItem.price}</td>
-                  <td>{cartItem.quantity}</td>
-                  <td>{cartItem.quantity * cartItem.price}</td>
+                  <td>{convertPriceToString(cartItem.price)}</td>
+                  {/* quantity */}
+                  <td className={styles.btnAction}>
+                    <button onClick={() => handleReduceItem(index, 1)}>
+                      -
+                    </button>
+                    {cartItem.quantity}
+                    <button onClick={() => handleReduceItem(index, -1)}>
+                      +
+                    </button>
+                  </td>
+                  <td>
+                    {convertPriceToString(cartItem.quantity * cartItem.price)}
+                  </td>
                 </tr>
               );
             })}
@@ -120,13 +151,62 @@ function Cart() {
         <div className={styles.pay}>
           <div className={styles.total}>
             <span>Total: &nbsp;</span>
-            <h3>{getTotal()}</h3>
+            <h3>{convertPriceToString(getTotal())}</h3>
           </div>
-          <div className={styles.payBtn} onClick={handlePay}>
+          <div
+            className={styles.payBtn}
+            onClick={() => setShowModal(!showModal)}
+          >
             Thanh toán
           </div>
         </div>
       </div>
+
+      {/* Bill */}
+      {showModal && (
+        <div className={styles.modalPay}>
+          <div
+            className={styles.layer}
+            onClick={() => setShowModal(!showModal)}
+          ></div>
+          <div className={styles.bill}>
+            <h1>Xác nhận thanh toán</h1>
+            {cartItems && (
+              <table>
+                <thead>
+                  <tr>
+                    <th>Sản phẩm</th>
+                    <th>Số lượng</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {cartItems.map((item, index) => (
+                    <tr key={index}>
+                      <td>{item.product.name}</td>
+                      <td>{item.quantity}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+            <strong>
+              Xác nhận thanh toán:{" "}
+              <span>{convertPriceToString(getTotal())}</span>
+            </strong>
+            <div className={styles.button}>
+              <button
+                className="btn btn-secondary"
+                onClick={() => setShowModal(!showModal)}
+              >
+                Cancer
+              </button>
+              <button className="btn btn-success" onClick={() => handlePay()}>
+                Thanh toán
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

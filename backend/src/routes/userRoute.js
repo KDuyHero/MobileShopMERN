@@ -29,7 +29,8 @@ route.get("/cart", requireSignin, getCart);
 
 // get all user
 route.get("/", getAllUser);
-route.get("/refresh-token", refreshToken);
+// refresh_token
+route.post("/refresh-token", refreshToken);
 // view info
 route.get("/:id", requireSignin, getUser);
 

@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import axios from "./axios";
-import "./App.css";
 import { publicRoutes } from "./routes";
 import Notfound from "./component/Container/Notfound";
 

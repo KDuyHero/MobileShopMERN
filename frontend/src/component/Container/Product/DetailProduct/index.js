@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowTrendDown,
@@ -8,11 +7,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import axios from "../../../../axios";
 
-import "./Product.css";
+import "./DetailProduct.css";
 import ShowListProduct from "../../../Layout/ShowListProduct";
 import Header from "../../../Layout/Header";
 function DetailProduct() {
-  const [cookies, setCookie] = useCookies(["authorization"]);
   // current Product
   const [product, setProduct] = useState({
     _id: "123456",
@@ -36,7 +34,7 @@ function DetailProduct() {
     price: 29999990,
     discount: 5,
   });
-  // suggest Product
+  // suggest Product state
   const [products, setProducts] = useState([]);
   const measure = ["MP", "MP", "", "Inch", "mAh", "GB", "GB"];
 
@@ -44,12 +42,15 @@ function DetailProduct() {
   const [quantity, setQuantity] = useState(1);
   const params = useParams();
 
+  // get info current product
   useEffect(() => {
     axios.get(`/products/${params.productId}`).then((response) => {
       let product = response.data.product;
       setProduct(product);
       setCurrentImage(product.images[0]);
+      setQuantity(1);
 
+      // get list product suggest
       axios.get(`/products/categorys/${product.category}`).then((response) => {
         setProducts(response.data.products);
       });
@@ -57,10 +58,30 @@ function DetailProduct() {
     window.scrollTo(0, 0);
   }, [params.productId]);
 
+  const [showModal, setShowModal] = useState(false);
+  // get total price
+  const getTotal = () => {
+    return (
+      parseInt((product.price * (100 - product.discount)) / 100) * quantity
+    );
+  };
+
+  // convert number to form x.xxx.xxx VNĐ
+  const convertPriceToString = (price) => {
+    return price.toLocaleString("it-IT", {
+      style: "currency",
+      currency: "VND",
+    });
+  };
+
+  const handlePay = () => {};
+
+  // change image of current product when onMouseOver
   const handleChangeImage = (url) => {
     setCurrentImage(url);
   };
 
+  // change quantity
   const handleQuantity = (operator) => {
     if (operator === "-") {
       quantity > 1 ? setQuantity(quantity - 1) : setQuantity(1);
@@ -70,7 +91,6 @@ function DetailProduct() {
   };
 
   const handleAddToCart = () => {
-    console.log(cookies.access_token);
     axios
       .post(
         "/carts/add",
@@ -83,12 +103,11 @@ function DetailProduct() {
         },
         {
           headers: {
-            Authorization: "bearer " + cookies.access_token,
+            Authorization: "bearer " + window.localStorage.token,
           },
         }
       )
       .then((response) => {
-        console.log(response.data);
         if (response.data.errorCode === 0) {
           alert("Đã thêm thành công!");
         } else {
@@ -130,9 +149,13 @@ function DetailProduct() {
             <div className="price">
               {product.discount > 0 ? (
                 <>
-                  <p className="realPrice">{product.price}</p>
+                  <p className="realPrice">
+                    {convertPriceToString(product.price)}
+                  </p>
                   <p className="discountPrice">
-                    {parseInt((product.price * (100 - product.discount)) / 100)}
+                    {convertPriceToString(
+                      parseInt((product.price * (100 - product.discount)) / 100)
+                    )}
                   </p>
                   <p className="discount">
                     <FontAwesomeIcon icon={faArrowTrendDown} />{" "}
@@ -140,7 +163,9 @@ function DetailProduct() {
                   </p>
                 </>
               ) : (
-                <p className="notDiscount">{product.price}</p>
+                <p className="notDiscount">
+                  {convertPriceToString(product.price)}
+                </p>
               )}
             </div>
             <div className="quantity">
@@ -152,12 +177,17 @@ function DetailProduct() {
               </div>
             </div>
 
-            <div className="btn">
+            <div className="button">
               <div className="addToCartBtn" onClick={handleAddToCart}>
                 <FontAwesomeIcon icon={faCartPlus} />
                 <div>Thêm vào giỏ hàng</div>{" "}
               </div>
-              <div className="buyNowBtn">Mua ngay</div>
+              <div
+                className="buyNowBtn"
+                onClick={() => setShowModal(!showModal)}
+              >
+                Mua ngay
+              </div>
             </div>
           </div>
         </div>
@@ -187,6 +217,45 @@ function DetailProduct() {
           </div>
         </div>
       </div>
+
+      {/* Bill */}
+      {showModal && (
+        <div className="modalPay">
+          <div className="layer" onClick={() => setShowModal(!showModal)}></div>
+          <div className="bill">
+            <h1>Xác nhận thanh toán</h1>
+            <table>
+              <thead>
+                <tr>
+                  <th>Sản phẩm</th>
+                  <th>Số lượng</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{product.name}</td>
+                  <td>{quantity}</td>
+                </tr>
+              </tbody>
+            </table>
+            <strong>
+              Xác nhận thanh toán:{" "}
+              <span>{convertPriceToString(getTotal())}</span>
+            </strong>
+            <div className="buttonBill">
+              <button
+                className="btn btn-secondary"
+                onClick={() => setShowModal(!showModal)}
+              >
+                Cancer
+              </button>
+              <button className="btn btn-success" onClick={() => handlePay()}>
+                Thanh toán
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
