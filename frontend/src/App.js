@@ -1,13 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import axios from "./axios";
 import { publicRoutes } from "./routes";
 import Notfound from "./component/Container/Notfound";
 
 function App() {
-  // setInterval(() => {
-  //   console.log("refresh");
-  //   axios.get("/users/refresh-token").then((response) => console.log(response));
-  // }, 3000);
   return (
     <Router>
       <div className="App">

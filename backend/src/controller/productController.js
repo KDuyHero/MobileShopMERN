@@ -88,19 +88,6 @@ let createProduct = async (req, res) => {
   }
 };
 
-let getEditProductForm = async (req, res) => {
-  try {
-    let productId = req.params.id;
-    let product = await Product.findById(productId).exec();
-
-    return res.render("Product/EditProduct", { product: product });
-  } catch (error) {
-    return res.status(400).json({
-      message: "error",
-      error,
-    });
-  }
-};
 // PUT /:id
 let updateProduct = async (req, res) => {
   try {
@@ -112,8 +99,6 @@ let updateProduct = async (req, res) => {
     let newProduct = await Product.findByIdAndUpdate(id, data, {
       returnDocument: "after",
     });
-
-    return res.redirect("/api");
     return res.status(200).json({
       message: "OK",
       newProduct,
@@ -131,10 +116,8 @@ let deleteProduct = async (req, res) => {
   try {
     let id = req.params.id;
     let productDelete = await Product.findByIdAndDelete(id).exec();
-    return res.redirect("/api");
     return res.status(200).json({
       message: "OK",
-      productDelete,
     });
   } catch (error) {
     return res.status(400).json({
@@ -144,6 +127,7 @@ let deleteProduct = async (req, res) => {
   }
 };
 
+//GET /categorys/:category
 let getProductByCategory = async (req, res) => {
   try {
     let category = req.params.category;
@@ -164,7 +148,6 @@ module.exports = {
   getAllProduct,
   getProduct,
   createProduct,
-  getEditProductForm,
   getProductByCategory,
   updateProduct,
   deleteProduct,

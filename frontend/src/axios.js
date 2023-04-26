@@ -3,6 +3,7 @@ import axios from "axios";
 const instance = axios.create({
   baseURL: "http://localhost:8080/api",
   timeout: 300000,
+  headers: {},
 });
 
 instance.saveAccessToken = (token) => {
@@ -28,6 +29,7 @@ instance.getRefreshToken = () => {
 // xử lý data trước khi xuống server
 instance.interceptors.request.use(
   (config) => {
+    config.headers["Authorization"] = "bearer " + instance.getAccessToken();
     return config;
   },
   (err) => {
@@ -64,8 +66,6 @@ instance.interceptors.response.use(
         ).data;
         // after has newToken
         if (newToken) {
-          // set headers with new token
-          config.headers["Authorization"] = "bearer " + newToken;
           // save new token
           instance.saveAccessToken(newToken);
           // call prev api

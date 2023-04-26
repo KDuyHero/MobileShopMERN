@@ -7,6 +7,7 @@ import styles from "./AllProduct.module.css";
 function AllProduct() {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
+  // get all Product
   useEffect(() => {
     axios
       .get("/products")
@@ -19,8 +20,21 @@ function AllProduct() {
   const handleAddButton = () => {
     navigate("/products/new");
   };
+
+  // delete product
   const handleDeleteProduct = (productId) => {
-    alert("delete " + productId);
+    axios
+      .delete(`/products/${productId}`, {}, {})
+      .then((response) => {
+        // if delete success => setState
+        setProducts(products.filter((value, index) => value._id !== productId));
+      })
+      .catch((error) => {
+        alert("Có lỗi xảy ra khi xóa sản phẩm!");
+        window.localStorage.clear();
+        navigate("/");
+        window.scrollTo(0, 0);
+      });
   };
   return (
     <div className={styles.wrapper}>
